@@ -9,4 +9,10 @@ describe("<Home />", () => {
     });
     expect(headerTitle).toBeInTheDocument();
   });
+
+  test("Should be render a restaurant search field", () => {
+    render(<Home />);
+    const restaurantSearchField = screen.queryByPlaceholderText("Buscar estabelecimento");
+    expect(restaurantSearchField).toBeInTheDocument();
+  });
 });
