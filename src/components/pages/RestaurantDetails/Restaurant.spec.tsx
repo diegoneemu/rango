@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react"
 import { FunctionComponent } from "react"
 
 const RestaurantDetails: FunctionComponent = () => {
-  return (<div></div>)
+  return (<div><h1>Nome do Restaurante</h1></div>)
 }
 
 describe("<RestaurantDetails />", ()=>{
