@@ -21,4 +21,12 @@ describe("<RestaurantDetails />", ()=>{
 
     expect(src).toEqual("img/0_nome_do_restaurante.png");
   })
+
+  test("Should be render a restaurant address", () => {
+    render(<RestaurantDetails />)
+
+    const restaurantAddress = screen.queryByLabelText(/Endereço do Restaurante/);
+
+    expect(restaurantAddress).toBeInTheDocument();
+  })
 })
