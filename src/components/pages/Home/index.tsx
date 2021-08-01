@@ -23,6 +23,7 @@ export const Home: FunctionComponent = () => {
     try {
       const restaurants = await getRestaurants();
       setRestaurants(restaurants);
+      setIsLoading(false);
     } catch (ex) {
       console.error(`Falha ao carregar restaurantes`, ex);
     }
