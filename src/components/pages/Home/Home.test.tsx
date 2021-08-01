@@ -1,4 +1,11 @@
-import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  cleanup,
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import { Home } from ".";
 import { getRestaurants } from "./getRestaurants";
 
@@ -102,6 +109,42 @@ describe("<Home />", () => {
       });
 
       expect(restaurantCards).toHaveLength(0);
+    });
+  });
+
+  test("Should be render a restaurants card when fetch is finalize", async () => {
+    (getRestaurants as jest.Mock).mockResolvedValueOnce(
+      Array.from({ length: 12 }, (_: unknown, index: number) => ({
+        id: index,
+        name: "Nome do Restaurante",
+        address: "Endereço do restaurante",
+        image: `img/${index}_nome_do_restaurante.png`,
+        hours: [],
+      }))
+    );
+
+    await act(async () => {
+      render(<Home />);
+
+      const loadingElement = await waitFor(() =>
+        screen.queryByAltText("Loading")
+      );
+
+      expect(loadingElement).toBeInTheDocument();
+
+      let restaurantCards = screen.queryAllByRole("button", {
+        name: /Nome do Restaurante/i,
+      });
+
+      expect(restaurantCards).toHaveLength(0);
+
+      await waitForElementToBeRemoved(() => screen.queryByAltText("Loading"));
+
+      restaurantCards = screen.queryAllByRole("button", {
+        name: /Nome do Restaurante/i,
+      });
+
+      expect(restaurantCards).toHaveLength(12);
     });
   });
 });
