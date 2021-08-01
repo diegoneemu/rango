@@ -126,7 +126,7 @@ describe("<Home />", () => {
     await act(async () => {
       render(<Home />);
 
-      const loadingElement = await waitFor(() =>
+      let loadingElement = await waitFor(() =>
         screen.queryByAltText("Loading")
       );
 
@@ -139,6 +139,12 @@ describe("<Home />", () => {
       expect(restaurantCards).toHaveLength(0);
 
       await waitForElementToBeRemoved(() => screen.queryByAltText("Loading"));
+
+      loadingElement = await waitFor(() =>
+        screen.queryByAltText("Loading")
+      );
+
+      expect(loadingElement).not.toBeInTheDocument();
 
       restaurantCards = screen.queryAllByRole("button", {
         name: /Nome do Restaurante/i,
