@@ -17,6 +17,7 @@ export type Restaurant = {
 
 export const Home: FunctionComponent = () => {
   const [restaurants, setRestaurants] = useState<Array<Restaurant>>([]);
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
   
   const fetchRestaurants = async function () {
     try {
@@ -35,6 +36,7 @@ export const Home: FunctionComponent = () => {
     <div className="home_page">
       <h1>Bem-vindo ao Lista Rango</h1>
       <input type="text" placeholder="Buscar estabelecimento" />
+      {isLoading && <img alt="Loading" src="img/loading.gif" />}
       {restaurants.map((restaurant: Restaurant, index: number) => 
           (<article key={restaurant.id} aria-label={restaurant.name} tabIndex={index} role="button">
             <h1>{restaurant.name}</h1>
