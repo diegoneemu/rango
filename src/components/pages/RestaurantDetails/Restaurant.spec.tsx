@@ -1,9 +1,5 @@
 import { render, screen } from "@testing-library/react"
-import { FunctionComponent } from "react"
-
-const RestaurantDetails: FunctionComponent = () => {
-  return (<div><h1>Nome do Restaurante</h1></div>)
-}
+import { RestaurantDetails } from "."
 
 describe("<RestaurantDetails />", ()=>{
   test("Should be render a restaurant name", ()=>{
