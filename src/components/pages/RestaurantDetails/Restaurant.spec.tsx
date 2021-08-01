@@ -9,4 +9,12 @@ describe("<RestaurantDetails />", ()=>{
 
     expect(restaurantName).toBeInTheDocument();
   })
+
+  test("Should be render a restaurant logo", ()=>{
+    render(<RestaurantDetails />)
+
+    const restaurantLogo = screen.queryByAltText("Logotipo do Nome do Restaurante");
+
+    expect(restaurantLogo).toBeInTheDocument();
+  })
 })
