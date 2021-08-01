@@ -73,4 +73,14 @@ describe("<Home />", () => {
       expect(alt).toEqual("Logotipo do Nome do Restaurante");
     });
   });
+
+  test("Should be render a loading gif when fetch restaurants", async ()=>{
+    render(<Home />);
+
+    const loadingElement = await waitFor(()=>screen.queryByAltText("Loading"));
+    expect(loadingElement).toBeInTheDocument();
+
+    const src = loadingElement?.getAttribute("src");
+    expect(src).toEqual("img/loading.gif");
+  })
 });
