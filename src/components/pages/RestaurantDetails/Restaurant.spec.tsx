@@ -29,4 +29,15 @@ describe("<RestaurantDetails />", ()=>{
 
     expect(restaurantAddress).toBeInTheDocument();
   })
+
+  test("Should be render a restaurant opening hours", () => {
+    render(<RestaurantDetails />)
+
+    const restaurantOpeningHours = screen.queryByLabelText(/Horário de Funcionamento/);
+
+    expect(restaurantOpeningHours).toBeInTheDocument();
+    expect(restaurantOpeningHours).toHaveTextContent(/Segunda à Sexta: /);
+    expect(restaurantOpeningHours).toHaveTextContent(/Sábados: /)
+    expect(restaurantOpeningHours).toHaveTextContent(/Domingos e Feriados: /)
+  })
 })
