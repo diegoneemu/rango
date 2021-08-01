@@ -16,5 +16,9 @@ describe("<RestaurantDetails />", ()=>{
     const restaurantLogo = screen.queryByAltText("Logotipo do Nome do Restaurante");
 
     expect(restaurantLogo).toBeInTheDocument();
+
+    const src = restaurantLogo?.getAttribute("src");
+
+    expect(src).toEqual("img/0_nome_do_restaurante.png");
   })
 })
