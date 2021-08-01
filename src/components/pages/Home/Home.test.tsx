@@ -1,4 +1,4 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import { Home } from ".";
 import { getRestaurants } from "./getRestaurants";
 
@@ -10,7 +10,7 @@ jest.mock("./getRestaurants", () => ({
 
 describe("<Home />", () => {
   beforeEach(() => {
-    (getRestaurants as jest.Mock).mockResolvedValue([])
+    (getRestaurants as jest.Mock).mockResolvedValue([]);
   });
 
   afterEach(cleanup);
@@ -74,13 +74,34 @@ describe("<Home />", () => {
     });
   });
 
-  test("Should be render a loading gif when fetch restaurants", async ()=>{
-    render(<Home />);
+  test("Should be render a loading gif when fetch restaurants", async () => {
+    (getRestaurants as jest.Mock).mockResolvedValueOnce(
+      Array.from({ length: 12 }, (_: unknown, index: number) => ({
+        id: index,
+        name: "Nome do Restaurante",
+        address: "Endereço do restaurante",
+        image: `img/${index}_nome_do_restaurante.png`,
+        hours: [],
+      }))
+    );
 
-    const loadingElement = await waitFor(()=>screen.queryByAltText("Loading"));
-    expect(loadingElement).toBeInTheDocument();
+    await act(async () => {
+      render(<Home />);
 
-    const src = loadingElement?.getAttribute("src");
-    expect(src).toEqual("img/loading.gif");
-  })
+      const loadingElement = await waitFor(() =>
+        screen.queryByAltText("Loading")
+      );
+
+      expect(loadingElement).toBeInTheDocument();
+
+      const src = loadingElement?.getAttribute("src");
+      expect(src).toEqual("img/loading.gif");
+
+      const restaurantCards = screen.queryAllByRole("button", {
+        name: /Nome do Restaurante/i,
+      });
+
+      expect(restaurantCards).toHaveLength(0);
+    });
+  });
 });
