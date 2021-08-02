@@ -1,7 +1,24 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { RestaurantDetails } from "."
+import { getRestaurant } from "./getRestaurant"
+
+jest.mock("./getRestaurant", () => ({
+  __esModule: true,
+  default: "mockedDefaultExport",
+  getRestaurant: jest.fn(),
+}));
 
 describe("<RestaurantDetails />", ()=>{
+  beforeAll(()=>{
+    (getRestaurant as jest.Mock).mockResolvedValue({
+      id: 1,
+      name: "Nome do Restaurante",
+      address: "Endereço do Restaurante",
+      hours: [],
+      image: "img/1_nome_do_restaurante.png"
+    });
+  })
+
   test("Should be render a restaurant name", ()=>{
     render(<RestaurantDetails />)
 
