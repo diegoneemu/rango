@@ -2,7 +2,8 @@ import { useState } from "react";
 import { FunctionComponent } from "react";
 
 export const RestaurantDetails: FunctionComponent = () => {
-  const [isExpanded, setExpanded] = useState<boolean>(false);
+  const [isLunchExpanded, setLunchExpanded] = useState<boolean>(false);
+  const [isDrinkExpanded, setDrinkExpanded] = useState<boolean>(false);
 
   return (<div>
     <img alt="Logotipo do Nome do Restaurante" src="img/0_nome_do_restaurante.png" />
@@ -20,18 +21,33 @@ export const RestaurantDetails: FunctionComponent = () => {
     </label>
     <a
       href="#almocos"
-      onClick={()=> setExpanded((prevExpanded)=> !prevExpanded)}
+      onClick={()=> setLunchExpanded((prevExpanded)=> !prevExpanded)}
       role="button"
       aria-controls="lunch-collapsed-panel"
-      aria-expanded={isExpanded}
+      aria-expanded={isLunchExpanded}
     >
       Almoços
     </a>
     <section
       aria-label="Almoços"
       id="lunch-collapsed-panel"
-      aria-hidden={!isExpanded}
-      style={{boxSizing: "border-box", display: isExpanded ? "block" : "none", overflow: "hidden"}}
+      aria-hidden={!isLunchExpanded}
+      style={{boxSizing: "border-box", display: isLunchExpanded ? "block" : "none", overflow: "hidden"}}
+    ></section>
+    <a
+      href="#bebidas"
+      onClick={()=> setDrinkExpanded((prevExpanded)=> !prevExpanded)}
+      role="button"
+      aria-controls="drinks-collapsed-panel"
+      aria-expanded={isDrinkExpanded}
+    >
+      Bebidas
+    </a>
+    <section
+      aria-label="Bebidas"
+      id="drinks-collapsed-panel"
+      aria-hidden={!isDrinkExpanded}
+      style={{boxSizing: "border-box", display: isDrinkExpanded ? "block" : "none", overflow: "hidden"}}
     ></section>
   </div>);
 };
