@@ -35,7 +35,14 @@ export const RestaurantDetails: FunctionComponent = () => {
       id="lunch-collapsed-panel"
       aria-hidden={!isLunchExpanded}
       style={{boxSizing: "border-box", display: isLunchExpanded ? "block" : "none", overflow: "hidden"}}
-    ></section>
+    >
+      <article aria-label="Prato">
+
+      </article>
+      <article aria-label="Prato">
+
+      </article>
+    </section>
     <a
       href="#bebidas"
       onClick={()=> setDrinkExpanded((prevExpanded)=> !prevExpanded)}
