@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { FunctionComponent } from "react";
 
 export const RestaurantDetails: FunctionComponent = () => {
+  const [isExpanded, setExpanded] = useState<boolean>(false);
+
   return (<div>
     <img alt="Logotipo do Nome do Restaurante" src="img/0_nome_do_restaurante.png" />
     <h1>Nome do Restaurante</h1>
@@ -15,5 +18,20 @@ export const RestaurantDetails: FunctionComponent = () => {
       <input type="text" />
       <img alt="Ícone busca" src="img/search_ico.png" />
     </label>
+    <a
+      href="#almocos"
+      onClick={()=> setExpanded((prevExpanded)=> !prevExpanded)}
+      role="button"
+      aria-controls="lunch-collapsed-panel"
+      aria-expanded={isExpanded}
+    >
+      Almoços
+    </a>
+    <section
+      aria-label="Almoços"
+      id="lunch-collapsed-panel"
+      aria-hidden={!isExpanded}
+      style={{boxSizing: "border-box", display: isExpanded ? "block" : "none", overflow: "hidden"}}
+    ></section>
   </div>);
 };
