@@ -63,4 +63,21 @@ describe("<RestaurantDetails />", ()=>{
     expect(lunchButtonToggle?.getAttribute("aria-expanded")).toBe('true');
     expect(lunchContainer).toBeVisible();
   })
+
+  test("Should be render a collapsed drinks menu items group", async ()=>{
+    render(<RestaurantDetails />);
+
+    const drinksButtonToggle = screen.queryByRole("button", { name: /Bebidas/})
+    const drinksContainer = screen.queryByLabelText(/Bebidas/);
+
+    expect(drinksButtonToggle).toBeInTheDocument();
+    expect(drinksContainer).not.toBeVisible();
+
+    if(drinksButtonToggle){
+      fireEvent.click(drinksButtonToggle);
+    }
+
+    expect(drinksButtonToggle?.getAttribute("aria-expanded")).toBe('true');
+    expect(drinksContainer).toBeVisible();
+  })
 })
