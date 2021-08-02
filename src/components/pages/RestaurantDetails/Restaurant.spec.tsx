@@ -114,4 +114,24 @@ describe("<RestaurantDetails />", ()=>{
     expect(sideDishButtonToggle?.getAttribute("aria-expanded")).toBe('true');
     expect(sideDishContainer).toBeVisible();
   })
+
+  test("Should be render a visible dish card in menu itens group container when click in toggle button", () => {
+    render(<RestaurantDetails />);
+
+    const lunchButtonToggle = screen.queryByRole("button", { name: /Almoços/})
+    const dishCards = screen.queryAllByLabelText("Prato");
+
+    expect(dishCards).toHaveLength(2);
+    dishCards.forEach((dishCard: HTMLElement) => {
+      expect(dishCard).not.toBeVisible();
+    })
+
+    if(lunchButtonToggle){
+      fireEvent.click(lunchButtonToggle);
+    }
+
+    dishCards.forEach((dishCard: HTMLElement) => {
+      expect(dishCard).toBeVisible();
+    })
+  })
 })
