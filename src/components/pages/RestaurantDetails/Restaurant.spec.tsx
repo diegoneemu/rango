@@ -40,4 +40,10 @@ describe("<RestaurantDetails />", ()=>{
     expect(restaurantOpeningHours).toHaveTextContent(/Sábados: /)
     expect(restaurantOpeningHours).toHaveTextContent(/Domingos e Feriados: /)
   })
+
+  test("Should be render a restaurant search field", async () => {
+    render(<RestaurantDetails />);
+    const menuSearchField = screen.queryByLabelText("Buscar no cardápio")
+    expect(menuSearchField).toBeInTheDocument();
+  });
 })
