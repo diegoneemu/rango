@@ -134,4 +134,24 @@ describe("<RestaurantDetails />", ()=>{
       expect(dishCard).toBeVisible();
     })
   })
+
+  test("Should be render a visible dish card with dish information", () => {
+    render(<RestaurantDetails />);
+
+    const lunchButtonToggle = screen.queryByRole("button", { name: /Almoços/})
+
+    if(lunchButtonToggle){
+      fireEvent.click(lunchButtonToggle);
+    }
+
+    const dishCards = screen.queryAllByLabelText("Prato");
+
+    expect(dishCards).toHaveLength(2);
+    dishCards.forEach((dishCard: HTMLElement) => {
+      expect(dishCard).toBeVisible();
+      expect(dishCard).toHaveTextContent("Nome do Prato");
+      expect(dishCard).toHaveTextContent("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do");
+      expect(dishCard).toHaveTextContent(/R\$\s(?!0+\,00)((\d{1,3}\.)*)(\d{1,3}),(\d{2})$/g);
+    })
+  })
 })
