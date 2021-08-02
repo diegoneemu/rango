@@ -10,5 +10,10 @@ export const RestaurantDetails: FunctionComponent = () => {
       <p>Sábados: 11:30 às 22:00</p>
       <p>Domingos e Feriados: 11:30 às 15:00</p>
     </article>
+    <label>
+      Buscar no cardápio
+      <input type="text" />
+      <img alt="Ícone busca" src="img/search_ico.png" />
+    </label>
   </div>);
 };
