@@ -37,10 +37,16 @@ export const RestaurantDetails: FunctionComponent = () => {
       style={{boxSizing: "border-box", display: isLunchExpanded ? "block" : "none", overflow: "hidden"}}
     >
       <article aria-label="Prato">
-
+        <img src="img/dish.png" alt="Foto do Prato" />
+        <h1>Nome do Prato</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p>
+        <span>R$ 19,90</span>
       </article>
       <article aria-label="Prato">
-
+        <img src="img/dish.png" alt="Foto do Prato" />
+        <h1>Nome do Prato</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p>
+        <span>R$ 19,90</span>
       </article>
     </section>
     <a
