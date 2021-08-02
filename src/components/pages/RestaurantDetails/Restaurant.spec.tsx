@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import { RestaurantDetails } from "."
 
 describe("<RestaurantDetails />", ()=>{
@@ -46,4 +46,21 @@ describe("<RestaurantDetails />", ()=>{
     const menuSearchField = screen.queryByLabelText("Buscar no cardápio")
     expect(menuSearchField).toBeInTheDocument();
   });
+
+  test("Should be render a collapsed lunch menu items group", async ()=>{
+    render(<RestaurantDetails />);
+
+    const lunchButtonToggle = screen.queryByRole("button", { name: /Almoços/})
+    const lunchContainer = screen.queryByLabelText(/Almoços/);
+
+    expect(lunchButtonToggle).toBeInTheDocument();
+    expect(lunchContainer).not.toBeVisible();
+
+    if(lunchButtonToggle){
+      fireEvent.click(lunchButtonToggle);
+    }
+
+    expect(lunchButtonToggle?.getAttribute("aria-expanded")).toBe('true');
+    expect(lunchContainer).toBeVisible();
+  })
 })
