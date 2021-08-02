@@ -1,20 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FunctionComponent } from "react";
+import { Restaurant } from "../Home";
+import { getRestaurant } from "./getRestaurant";
 
 export const RestaurantDetails: FunctionComponent = () => {
   const [isLunchExpanded, setLunchExpanded] = useState<boolean>(false);
   const [isDrinkExpanded, setDrinkExpanded] = useState<boolean>(false);
   const [isDessertsExpanded, setDessertsExpanded] = useState<boolean>(false);
   const [isSideDishExpanded, setSideDishExpanded] = useState<boolean>(false);
+  const [restaurant, setRestaurant] = useState<Restaurant>();
 
-  return (<div>
-    <img alt="Logotipo do Nome do Restaurante" src="img/0_nome_do_restaurante.png" />
-    <h1>Nome do Restaurante</h1>
-    <p aria-label="Endereço do Restaurante">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+  const fetchRestaurant = async function () {
+    try {
+      const restaurant = await getRestaurant();
+      setRestaurant(restaurant);
+    } catch (ex) {
+      console.error(`Falha ao carregar restaurantes`, ex);
+    }
+  };
+
+  useEffect(()=>{
+    fetchRestaurant();
+  }, [])
+
+  return (
+  <div>
+    <img alt={`Logotipo do ${restaurant?.name}`} src={restaurant?.image} />
+    <h1>{restaurant?.name}</h1>
+    <p aria-label="Endereço do Restaurante">{restaurant?.address}</p>
     <article aria-label="Horário de Funcionamento">
-      <p>Segunda à Sexta: 11:30 às 15:00</p>
-      <p>Sábados: 11:30 às 22:00</p>
-      <p>Domingos e Feriados: 11:30 às 15:00</p>
+      {restaurant && <>
+        {<p>Segunda à Sexta: {restaurant.hours[0].from} às {restaurant.hours[0].to}</p>}
+        {<p>Sábados: {restaurant.hours[1].from} às {restaurant.hours[1].to}</p>}
+        {<p>Domingos e Feriados: {restaurant.hours[2].from} às {restaurant.hours[2].to}</p>}
+      </>}
     </article>
     <label>
       Buscar no cardápio

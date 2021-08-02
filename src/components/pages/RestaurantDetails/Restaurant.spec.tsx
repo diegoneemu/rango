@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react"
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { RestaurantDetails } from "."
 import { getRestaurant } from "./getRestaurant"
 
@@ -9,66 +9,84 @@ jest.mock("./getRestaurant", () => ({
 }));
 
 describe("<RestaurantDetails />", ()=>{
-  beforeAll(()=>{
+  beforeEach(()=>{
     (getRestaurant as jest.Mock).mockResolvedValue({
       id: 1,
       name: "Nome do Restaurante",
       address: "Endereço do Restaurante",
-      hours: [],
+      hours: [
+        {
+          from: "11:30",
+          to: "15:00",
+          days: [2,3,4,5,6]
+        },
+        {
+          from: "11:30",
+          to: "22:00",
+          days: [7]
+        },
+        {
+          from: "11:30",
+          to: "15:00",
+          days: [1]
+        }
+      ],
       image: "img/1_nome_do_restaurante.png"
     });
-  })
+  });
 
-  test("Should be render a restaurant name", ()=>{
+  afterEach(cleanup);
+
+  test("Should be render a restaurant name", async ()=>{
     render(<RestaurantDetails />)
 
-    const restaurantName = screen.queryByRole("heading", { name: /Nome do Restaurante/});
+    const restaurantName = await waitFor(async ()=> await screen.findByRole("heading", { name: /Nome do Restaurante/}));
 
     expect(restaurantName).toBeInTheDocument();
   })
 
-  test("Should be render a restaurant logo", ()=>{
+  test("Should be render a restaurant logo", async ()=>{
     render(<RestaurantDetails />)
 
-    const restaurantLogo = screen.queryByAltText("Logotipo do Nome do Restaurante");
+    const restaurantLogo = await waitFor(async ()=> await screen.findByAltText("Logotipo do Nome do Restaurante"));
 
     expect(restaurantLogo).toBeInTheDocument();
 
     const src = restaurantLogo?.getAttribute("src");
 
-    expect(src).toEqual("img/0_nome_do_restaurante.png");
+    expect(src).toEqual("img/1_nome_do_restaurante.png");
   })
 
-  test("Should be render a restaurant address", () => {
+  test("Should be render a restaurant address", async () => {
     render(<RestaurantDetails />)
 
-    const restaurantAddress = screen.queryByLabelText(/Endereço do Restaurante/);
+    const restaurantAddress = await waitFor(()=>screen.queryByLabelText(/Endereço do Restaurante/));
 
     expect(restaurantAddress).toBeInTheDocument();
   })
 
-  test("Should be render a restaurant opening hours", () => {
+  test("Should be render a restaurant opening hours", async () => {
     render(<RestaurantDetails />)
 
-    const restaurantOpeningHours = screen.queryByLabelText(/Horário de Funcionamento/);
+    const restaurantOpeningHours = await waitFor(()=>screen.queryByLabelText(/Horário de Funcionamento/));
 
     expect(restaurantOpeningHours).toBeInTheDocument();
-    expect(restaurantOpeningHours).toHaveTextContent(/Segunda à Sexta: /);
-    expect(restaurantOpeningHours).toHaveTextContent(/Sábados: /)
-    expect(restaurantOpeningHours).toHaveTextContent(/Domingos e Feriados: /)
+    expect(restaurantOpeningHours).toHaveTextContent(/Segunda à Sexta: 11:30 às 15:00/);
+    expect(restaurantOpeningHours).toHaveTextContent(/Sábados: 11:30 às 22:00/)
+    expect(restaurantOpeningHours).toHaveTextContent(/Domingos e Feriados: 11:30 às 15:00/)
   })
 
   test("Should be render a restaurant search field", async () => {
     render(<RestaurantDetails />);
-    const menuSearchField = screen.queryByLabelText("Buscar no cardápio")
+    const menuSearchField = await waitFor(()=>screen.queryByLabelText("Buscar no cardápio"))
     expect(menuSearchField).toBeInTheDocument();
   });
 
   test("Should be render a collapsed lunch menu items group", async ()=>{
     render(<RestaurantDetails />);
 
-    const lunchButtonToggle = screen.queryByRole("button", { name: /Almoços/})
-    const lunchContainer = screen.queryByLabelText(/Almoços/);
+    const lunchButtonToggle = await waitFor(()=>screen.queryByRole("button", { name: /Almoços/}))
+    const lunchContainer = await waitFor(()=>screen.queryByLabelText(/Almoços/));
 
     expect(lunchButtonToggle).toBeInTheDocument();
     expect(lunchContainer).not.toBeVisible();
@@ -84,8 +102,8 @@ describe("<RestaurantDetails />", ()=>{
   test("Should be render a collapsed drinks menu items group", async ()=>{
     render(<RestaurantDetails />);
 
-    const drinksButtonToggle = screen.queryByRole("button", { name: /Bebidas/})
-    const drinksContainer = screen.queryByLabelText(/Bebidas/);
+    const drinksButtonToggle = await waitFor(()=>screen.queryByRole("button", { name: /Bebidas/}))
+    const drinksContainer = await waitFor(()=>screen.queryByLabelText(/Bebidas/));
 
     expect(drinksButtonToggle).toBeInTheDocument();
     expect(drinksContainer).not.toBeVisible();
@@ -101,8 +119,8 @@ describe("<RestaurantDetails />", ()=>{
   test("Should be render a collapsed desserts menu items group", async ()=>{
     render(<RestaurantDetails />);
 
-    const dessertsButtonToggle = screen.queryByRole("button", { name: /Sobremesas/})
-    const dessertsContainer = screen.queryByLabelText(/Sobremesas/);
+    const dessertsButtonToggle = await waitFor(()=>screen.queryByRole("button", { name: /Sobremesas/}))
+    const dessertsContainer = await waitFor(()=>screen.queryByLabelText(/Sobremesas/));
 
     expect(dessertsButtonToggle).toBeInTheDocument();
     expect(dessertsContainer).not.toBeVisible();
@@ -118,8 +136,8 @@ describe("<RestaurantDetails />", ()=>{
   test("Should be render a collapsed side dish menu items group", async ()=>{
     render(<RestaurantDetails />);
 
-    const sideDishButtonToggle = screen.queryByRole("button", { name: /Acompanhamentos/})
-    const sideDishContainer = screen.queryByLabelText(/Acompanhamentos/);
+    const sideDishButtonToggle = await waitFor(()=>screen.queryByRole("button", { name: /Acompanhamentos/}))
+    const sideDishContainer = await waitFor(()=>screen.queryByLabelText(/Acompanhamentos/));
 
     expect(sideDishButtonToggle).toBeInTheDocument();
     expect(sideDishContainer).not.toBeVisible();
@@ -132,11 +150,11 @@ describe("<RestaurantDetails />", ()=>{
     expect(sideDishContainer).toBeVisible();
   })
 
-  test("Should be render a visible dish card in menu itens group container when click in toggle button", () => {
+  test("Should be render a visible dish card in menu itens group container when click in toggle button", async () => {
     render(<RestaurantDetails />);
 
-    const lunchButtonToggle = screen.queryByRole("button", { name: /Almoços/})
-    const dishCards = screen.queryAllByLabelText("Prato");
+    const lunchButtonToggle = await waitFor(()=>screen.queryByRole("button", { name: /Almoços/}))
+    const dishCards = await waitFor(()=>screen.queryAllByLabelText("Prato"));
 
     expect(dishCards).toHaveLength(2);
     dishCards.forEach((dishCard: HTMLElement) => {
@@ -152,16 +170,16 @@ describe("<RestaurantDetails />", ()=>{
     })
   })
 
-  test("Should be render a visible dish card with dish information", () => {
+  test("Should be render a visible dish card with dish information", async () => {
     render(<RestaurantDetails />);
 
-    const lunchButtonToggle = screen.queryByRole("button", { name: /Almoços/})
+    const lunchButtonToggle = await waitFor(()=>screen.queryByRole("button", { name: /Almoços/}))
 
     if(lunchButtonToggle){
       fireEvent.click(lunchButtonToggle);
     }
 
-    const dishCards = screen.queryAllByLabelText("Prato");
+    const dishCards = await waitFor(()=>screen.queryAllByLabelText("Prato"));
 
     expect(dishCards).toHaveLength(2);
     dishCards.forEach((dishCard: HTMLElement) => {
