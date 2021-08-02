@@ -5,6 +5,7 @@ export const RestaurantDetails: FunctionComponent = () => {
   const [isLunchExpanded, setLunchExpanded] = useState<boolean>(false);
   const [isDrinkExpanded, setDrinkExpanded] = useState<boolean>(false);
   const [isDessertsExpanded, setDessertsExpanded] = useState<boolean>(false);
+  const [isSideDishExpanded, setSideDishExpanded] = useState<boolean>(false);
 
   return (<div>
     <img alt="Logotipo do Nome do Restaurante" src="img/0_nome_do_restaurante.png" />
@@ -64,6 +65,21 @@ export const RestaurantDetails: FunctionComponent = () => {
       id="drinks-collapsed-panel"
       aria-hidden={!isDessertsExpanded}
       style={{boxSizing: "border-box", display: isDessertsExpanded ? "block" : "none", overflow: "hidden"}}
+    ></section>
+    <a
+      href="#acompanhamentos"
+      onClick={()=> setSideDishExpanded((prevExpanded)=> !prevExpanded)}
+      role="button"
+      aria-controls="drinks-collapsed-panel"
+      aria-expanded={isSideDishExpanded}
+    >
+      Acompanhamentos
+    </a>
+    <section
+      aria-label="Acompanhamentos"
+      id="drinks-collapsed-panel"
+      aria-hidden={!isSideDishExpanded}
+      style={{boxSizing: "border-box", display: isSideDishExpanded ? "block" : "none", overflow: "hidden"}}
     ></section>
   </div>);
 };
