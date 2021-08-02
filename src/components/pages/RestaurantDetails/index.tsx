@@ -4,6 +4,7 @@ import { FunctionComponent } from "react";
 export const RestaurantDetails: FunctionComponent = () => {
   const [isLunchExpanded, setLunchExpanded] = useState<boolean>(false);
   const [isDrinkExpanded, setDrinkExpanded] = useState<boolean>(false);
+  const [isDessertsExpanded, setDessertsExpanded] = useState<boolean>(false);
 
   return (<div>
     <img alt="Logotipo do Nome do Restaurante" src="img/0_nome_do_restaurante.png" />
@@ -48,6 +49,21 @@ export const RestaurantDetails: FunctionComponent = () => {
       id="drinks-collapsed-panel"
       aria-hidden={!isDrinkExpanded}
       style={{boxSizing: "border-box", display: isDrinkExpanded ? "block" : "none", overflow: "hidden"}}
+    ></section>
+    <a
+      href="#sobremesas"
+      onClick={()=> setDessertsExpanded((prevExpanded)=> !prevExpanded)}
+      role="button"
+      aria-controls="drinks-collapsed-panel"
+      aria-expanded={isDessertsExpanded}
+    >
+      Sobremesas
+    </a>
+    <section
+      aria-label="Sobremesas"
+      id="drinks-collapsed-panel"
+      aria-hidden={!isDessertsExpanded}
+      style={{boxSizing: "border-box", display: isDessertsExpanded ? "block" : "none", overflow: "hidden"}}
     ></section>
   </div>);
 };
