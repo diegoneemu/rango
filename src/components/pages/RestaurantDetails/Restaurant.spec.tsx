@@ -80,4 +80,21 @@ describe("<RestaurantDetails />", ()=>{
     expect(drinksButtonToggle?.getAttribute("aria-expanded")).toBe('true');
     expect(drinksContainer).toBeVisible();
   })
+
+  test("Should be render a collapsed desserts menu items group", async ()=>{
+    render(<RestaurantDetails />);
+
+    const dessertsButtonToggle = screen.queryByRole("button", { name: /Sobremesas/})
+    const dessertsContainer = screen.queryByLabelText(/Sobremesas/);
+
+    expect(dessertsButtonToggle).toBeInTheDocument();
+    expect(dessertsContainer).not.toBeVisible();
+
+    if(dessertsButtonToggle){
+      fireEvent.click(dessertsButtonToggle);
+    }
+
+    expect(dessertsButtonToggle?.getAttribute("aria-expanded")).toBe('true');
+    expect(dessertsContainer).toBeVisible();
+  })
 })
